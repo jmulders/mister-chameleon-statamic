@@ -1,0 +1,38 @@
+{{#
+    Default context-slot renderer (starter).
+
+    The PLATFORM owns the production version of this template and provisions it
+    via `php please mc:sync`, so the markup matches the live site exactly. This
+    starter keeps a working render before the first sync. It receives:
+      slot_type    — hero | proof | cta | …
+      variant_key  — the resolved variant
+      content      — resolved field values (heading, body, cta_label, cta_url, …)
+#}}
+
+{{ if slot_type == 'hero' }}
+    <section class="mc-slot mc-slot--hero">
+        {{ if content:eyebrow }}<p class="mc-eyebrow">{{ content:eyebrow }}</p>{{ /if }}
+        <h1 class="mc-heading">{{ content:heading ?? 'Welkom' }}</h1>
+        {{ if content:body }}<p class="mc-body">{{ content:body }}</p>{{ /if }}
+        {{ if content:cta_label }}
+            <a class="mc-btn mc-btn--primary" href="{{ content:cta_url ?? '#' }}">{{ content:cta_label }}</a>
+        {{ /if }}
+    </section>
+{{ /if }}
+
+{{ if slot_type == 'cta' }}
+    <section class="mc-slot mc-slot--cta">
+        <h2 class="mc-heading">{{ content:heading ?? '' }}</h2>
+        {{ if content:body }}<p class="mc-body">{{ content:body }}</p>{{ /if }}
+        {{ if content:cta_label }}
+            <a class="mc-btn mc-btn--primary" href="{{ content:cta_url ?? '#' }}">{{ content:cta_label }}</a>
+        {{ /if }}
+    </section>
+{{ /if }}
+
+{{ if slot_type == 'proof' }}
+    <section class="mc-slot mc-slot--proof">
+        {{ if content:heading }}<h2 class="mc-heading">{{ content:heading }}</h2>{{ /if }}
+        {{ if content:body }}<p class="mc-body">{{ content:body }}</p>{{ /if }}
+    </section>
+{{ /if }}

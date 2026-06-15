@@ -1,0 +1,7 @@
+# Keep distribution archives lean — exclude dev-only files from `composer require`.
+/.github            export-ignore
+/tests              export-ignore
+/.gitattributes     export-ignore
+/.gitignore         export-ignore
+/CHANGELOG.md       export-ignore
+/phpunit.xml        export-ignore

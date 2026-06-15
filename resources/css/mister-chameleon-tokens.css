@@ -1,0 +1,23 @@
+/*
+ * Mister Chameleon — design tokens (starter).
+ *
+ * The platform owns the production tokens and provisions this file via
+ * `php please mc:sync`, so the site's blocks share the platform's design
+ * system. These defaults mirror the Mister Chameleon brand until first sync.
+ */
+:root {
+  --mc-brand-500: #6366f1;
+  --mc-brand-600: #4f46e5;
+  --mc-ink-950: #020617;
+  --mc-ink-700: #334155;
+  --mc-radius-card: 1rem;
+  --mc-radius-interactive: 0.5rem;
+  --mc-font-sans: "Geist", "Inter", system-ui, sans-serif;
+}
+
+.mc-slot { font-family: var(--mc-font-sans); }
+.mc-eyebrow { color: var(--mc-brand-600); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; font-size: .8rem; }
+.mc-heading { font-weight: 700; line-height: 1.1; }
+.mc-body { color: var(--mc-ink-700); }
+.mc-btn { display: inline-block; border-radius: var(--mc-radius-interactive); padding: .75rem 1.25rem; font-weight: 600; text-decoration: none; }
+.mc-btn--primary { background: var(--mc-brand-600); color: #fff; }

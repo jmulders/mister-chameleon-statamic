@@ -1,0 +1,43 @@
+{
+    "name": "mister-chameleon/statamic",
+    "description": "Mister Chameleon — per-visitor website personalisation for Statamic. Render platform-managed context slots and blocks natively in Antlers, with variant resolution from the Mister Chameleon decision engine.",
+    "type": "statamic-addon",
+    "license": "proprietary",
+    "keywords": ["statamic", "personalisation", "personalization", "ab-testing", "cms", "mister-chameleon"],
+    "homepage": "https://www.misterchameleon.nl",
+    "support": {
+        "email": "support@misterchameleon.nl",
+        "issues": "https://www.misterchameleon.nl/support"
+    },
+    "authors": [
+        {
+            "name": "Mister Chameleon",
+            "homepage": "https://www.misterchameleon.nl"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "statamic/cms": "^5.0 || ^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MisterChameleon\\Statamic\\": "src"
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Mister Chameleon",
+            "description": "Per-visitor personalisation for Statamic, powered by the Mister Chameleon platform."
+        },
+        "laravel": {
+            "providers": [
+                "MisterChameleon\\Statamic\\ServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
+    }
+}

@@ -1,0 +1,45 @@
+title: 'Mister Chameleon — Context Slot'
+fields:
+  -
+    handle: slot_type
+    field:
+      type: select
+      display: 'Slot type'
+      instructions: 'Which personalisation slot this block fills.'
+      options:
+        hero: Hero
+        proof: 'Social proof'
+        cta: 'Call to action'
+        feature: Feature
+        conversion: Conversion
+      default: hero
+      width: 50
+  -
+    handle: variant_key
+    field:
+      type: text
+      display: 'Default variant key'
+      instructions: 'The CMS-authored fallback variant served to bots and when the platform is unavailable.'
+      width: 50
+  -
+    handle: heading
+    field:
+      type: text
+      display: Heading
+  -
+    handle: body
+    field:
+      type: textarea
+      display: Body
+  -
+    handle: cta_label
+    field:
+      type: text
+      display: 'CTA label'
+      width: 50
+  -
+    handle: cta_url
+    field:
+      type: text
+      display: 'CTA URL'
+      width: 50
