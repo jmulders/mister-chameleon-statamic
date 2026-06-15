@@ -26,6 +26,16 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     /**
+     * Front-end routes shipped by the addon. Statamic registers these with the
+     * `web` middleware at the site root (before its content catch-all), so the
+     * Live Preview bridge is available at /mc-live-preview without each tenant
+     * needing to define it in their own routes/web.php.
+     */
+    protected $routes = [
+        'web' => __DIR__ . '/../routes/web.php',
+    ];
+
+    /**
      * Block render partials + fieldsets are published into the host site so the
      * platform's build pipeline (mc:sync) can keep them in lockstep.
      */
