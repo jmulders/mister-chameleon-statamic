@@ -7,11 +7,19 @@ use Statamic\Tags\Tags;
 /**
  * {{ mc:snippet }}  — place once before </body>.
  *
- * Emits the small client runtime that powers `client` and `hybrid` modes:
- * it finds [data-mc-slot] elements, asks the platform for the visitor's
- * variant, and swaps the markup in-place. In `edge` mode it is a no-op beyond
- * reporting impressions/experiment exposure. Loaded from the platform CDN so
- * updates ship without re-deploying the site.
+ * In `client` / `hybrid` mode this loads the Mister Chameleon UNIVERSAL snippet
+ * from the platform — the exact same runtime the WordPress plugin uses. It
+ * mints/reads a first-party visitor id, reports a pageview to the decision
+ * engine (POST /api/snippet/decide), and swaps every [data-mc-slot] and
+ * [data-mc-block] element in the browser. So client mode gets the full
+ * behavioural-context + personalisation pipeline, not a bespoke one.
+ *
+ * In `edge` mode variants are already resolved server-side by {{ mc:slot }}
+ * (which also records context via POST /api/v1/slot), so this tag is a no-op.
+ *
+ * NOTE: `hybrid` runs BOTH the server-side resolve and this client snippet, so a
+ * pageview is recorded twice (once per path). Prefer `edge` or `client` unless
+ * you specifically need server-first paint plus client refinement.
  */
 class Snippet extends Tags
 {
@@ -21,16 +29,16 @@ class Snippet extends Tags
         $tenant = (string) config('mister_chameleon.tenant_key', '');
         $mode = (string) config('mister_chameleon.mode', 'edge');
 
-        if ($tenant === '') {
+        // No tenant key, or edge mode (fully resolved server-side) → nothing to load.
+        if ($tenant === '' || $mode === 'edge') {
             return '';
         }
 
+        // client / hybrid → load the universal snippet (data-site-key = tenant key).
         return sprintf(
-            '<script async src="%s/snippet/v1.js" data-mc-tenant="%s" data-mc-api="%s" data-mc-mode="%s"></script>',
+            '<script async src="%s/api/snippet.js" data-site-key="%s"></script>',
             e($apiUrl),
             e($tenant),
-            e($apiUrl),
-            e($mode),
         );
     }
 }
