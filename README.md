@@ -8,19 +8,48 @@ Because rendering happens inside Statamic, the CP's native **Live Preview just w
 
 ## Install
 
+This is a **private, licensed package** distributed via Private Packagist. Your
+Mister Chameleon onboarding e-mail contains your Composer repository URL and
+access token.
+
+**1. Add the private repository** to your project's `composer.json`:
+
+```json
+{
+  "repositories": [
+    { "type": "composer", "url": "https://repo.packagist.com/<your-org>/" }
+  ]
+}
+```
+
+**2. Authenticate** (do this once; the token is in your onboarding e-mail — never
+commit it):
+
 ```bash
-composer require mister-chameleon/statamic
+composer config --global --auth http-basic.repo.packagist.com token <your-token>
+```
+
+**3. Require the package** (pin to a version range so updates are predictable):
+
+```bash
+composer require mister-chameleon/statamic:^1.0
 php artisan vendor:publish --tag=mister-chameleon-config
 php artisan vendor:publish --tag=mister-chameleon-blocks
 ```
 
-Add your credentials to `.env`:
+**4. Add your credentials to `.env`:**
 
 ```dotenv
 MISTER_CHAMELEON_API_URL=https://www.misterchameleon.nl
 MISTER_CHAMELEON_TENANT_KEY=your-tenant-key
-MISTER_CHAMELEON_MODE=edge   # edge | client | hybrid
+# edge = server-side render (best SEO, no flash). client = swap in the browser
+# after your cache/CDN (recommended for an existing, cached site). hybrid = both.
+MISTER_CHAMELEON_MODE=client
 ```
+
+> **Existing site behind a cache/CDN?** Use `client`. Server-side `edge` rendering
+> conflicts with full-page caching (a cached page is not re-resolved per visitor).
+> Platform-provisioned sites we build for you default to `edge`.
 
 Pull the platform-managed blocks, fieldsets and design tokens:
 
@@ -71,7 +100,12 @@ The platform is the **single source of truth** for blocks and styling: `php plea
 
 ## Privacy
 
-The addon sends only coarse, first-party signals (anonymous rotating fingerprint, referrer, UTM, device class, bot flag). No PII, no cross-site identifiers. Detected bots always receive the default variant.
+The addon sends only coarse, first-party signals: a first-party `mc_vid`
+identifier (a random UUID stored in a 1-year cookie on **your** domain — not
+shared across sites), referrer, UTM, device class and a bot flag. No PII, no
+cross-site tracking, no third-party cookies. Detected bots always receive the
+default variant. In `client` mode the runtime is only loaded after your consent
+tooling allows it.
 
 ## Requirements
 
