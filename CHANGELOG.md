@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- `{{ mc:slot }}` now sends the page's editor-set meta keywords (from the
+  `keywords` / `seo_keywords` / `meta_keywords` field, or SEO Pro's `seo.keywords`)
+  to the platform as `page.keywords`, so interest-profile scoring works in
+  edge mode — matching what the JS snippet reads from `<meta name="keywords">`.
+
 ### Changed
 - `VisitorContext` now mints and persists a stable first-party `mc_vid` cookie
   (random UUID, 1 year, SameSite=Lax) and sends it in `tokens.mc_vid` as the

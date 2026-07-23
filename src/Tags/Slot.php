@@ -37,6 +37,9 @@ class Slot extends Tags
             'collection' => (string) ($this->context->get('collection') ?? 'pages'),
             'slug' => (string) ($this->context->get('slug') ?? ''),
             'locale' => (string) ($this->context->get('site') ?? app()->getLocale()),
+            // Editor-set meta keywords for interest-profile scoring (mirrors what
+            // the JS snippet reads from <meta name="keywords">).
+            'keywords' => $this->pageKeywords(),
         ];
 
         $visitor = VisitorContext::fromRequest(request());
@@ -65,6 +68,36 @@ class Slot extends Tags
      * partial is provisioned by the platform (single source of truth), so the
      * markup matches the live site exactly.
      */
+    /**
+     * The page's editor-set meta keywords, normalised to a lowercased array.
+     * Looks in the common fields (keywords / seo_keywords / meta_keywords) and
+     * the SEO Pro `seo` array. Empty when the page has none.
+     */
+    protected function pageKeywords(): array
+    {
+        $raw = $this->context->get('keywords')
+            ?? $this->context->get('seo_keywords')
+            ?? $this->context->get('meta_keywords');
+
+        if (! $raw) {
+            $seo = $this->context->get('seo');
+            if (is_array($seo) && isset($seo['keywords'])) {
+                $raw = $seo['keywords'];
+            }
+        }
+
+        if (! $raw) {
+            return [];
+        }
+
+        $parts = is_array($raw) ? $raw : preg_split('/,+/', (string) $raw);
+
+        return array_values(array_filter(array_map(
+            fn ($k) => strtolower(trim((string) $k)),
+            $parts ?: [],
+        )));
+    }
+
     protected function renderVariant(string $slotType, string $variantKey, array $content): string
     {
         $view = "mister-chameleon::blocks.context_slot";
