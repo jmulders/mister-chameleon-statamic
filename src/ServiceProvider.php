@@ -3,6 +3,7 @@
 namespace MisterChameleon\Statamic;
 
 use Statamic\Providers\AddonServiceProvider;
+use Statamic\Facades\CP\Nav;
 use MisterChameleon\Statamic\Tags\Slot;
 use MisterChameleon\Statamic\Tags\Snippet;
 use MisterChameleon\Statamic\Console\SyncCommand;
@@ -33,6 +34,7 @@ class ServiceProvider extends AddonServiceProvider
      */
     protected $routes = [
         'web' => __DIR__ . '/../routes/web.php',
+        'cp'  => __DIR__ . '/../routes/cp.php',
     ];
 
     /**
@@ -54,6 +56,14 @@ class ServiceProvider extends AddonServiceProvider
         ], 'mister-chameleon-blocks');
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'mister-chameleon');
+
+        // A native CP entry for the add-on (Tools section) — the equivalent of a
+        // WordPress plugin settings/details screen.
+        Nav::extend(function ($nav) {
+            $nav->tools('Mister Chameleon')
+                ->route('mister_chameleon.index')
+                ->icon('earth');
+        });
     }
 
     public function register()

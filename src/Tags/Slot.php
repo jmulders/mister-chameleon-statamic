@@ -30,6 +30,11 @@ class Slot extends Tags
             return '';
         }
 
+        // Adaptive form blocks ({{ mc:slot type="form:contact" }}) are always
+        // rendered by the browser snippet — they are interactive (submit +
+        // validation + thank-you), so there is no server-side/edge path. Emit a
+        // data-mc-block container the snippet fills + wires, regardless of mode.
+        // Requires {{ mc:snippet }} to be present on the page.
         if (str_starts_with($slotType, 'form:')) {
             return sprintf('<div data-mc-block="%s"></div>', e($slotType));
         }
