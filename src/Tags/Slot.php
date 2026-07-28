@@ -30,6 +30,10 @@ class Slot extends Tags
             return '';
         }
 
+        if (str_starts_with($slotType, 'form:')) {
+            return sprintf('<div data-mc-block="%s"></div>', e($slotType));
+        }
+
         $default = (string) ($this->params->get('default') ?? $slotType . '_default');
         $mode = (string) config('mister_chameleon.mode', 'edge');
 
